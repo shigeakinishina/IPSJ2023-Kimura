@@ -1,0 +1,173 @@
+\pagestyle{empty}
+
+%\textheight 242mm
+%\textwidth 170mm
+%\topmargin 4.6mm
+\headheight 0mm
+\headsep 10mm
+\footskip 15mm
+%\oddsidemargin -5.4mm
+%\evensidemargin -5.4mm
+\columnsep 7mm
+
+\twocolumn
+
+\def\sectionsymbol{}
+\def\subsectionsymbol{}
+\def\subsubsectionsymbol{}
+
+% ページ番号抑制
+\pagestyle{empty}
+% キャプションを英語に変更
+\def\fnum@figure{Fig.~\thefigure}
+\def\fnum@table{Table~\thetable}
+% キャプションと番号の間の：を除去
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#1\hskip1em#2}%
+  \ifdim \wd\@tempboxa >\hsize
+    #1\hskip1em#2\relax\par
+  \else
+    \global \@minipagefalse
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+\def\section{%
+  \def\@sectsymbol{\sectionsymbol}%
+  \@startsection{section}{1}{\z@}%
+  {3.5ex \@plus 1ex \@minus .2ex}%
+  {1.5ex \@plus .2ex}%
+  {\reset@font\large\bfseries\mathversion{bold}}}
+
+\def\subsection{%
+  \def\@sectsymbol{\subsectionsymbol}%
+  \@startsection{subsection}{2}{\z@}%
+  {2.5ex \@plus 1ex \@minus .2ex}%
+  {1ex \@plus .2ex}%
+  {\reset@font\normalsize\bfseries\mathversion{bold}}}
+
+\def\subsubsection{%
+  \def\@sectsymbol{\subsubsectionsymbol}%
+  \@startsection{subsubsection}{3}{\z@}%
+  {2.5ex \@plus 1ex \@minus .2ex}%
+  {1ex \@plus .2ex}%
+  {\reset@font\normalsize\bfseries\mathversion{bold}}}
+
+\def\paragraph{%
+  \@startsection{paragraph}{4}{\z@}%
+  {2ex \@plus 1ex \@minus .2ex}%
+  {-1em}%
+  {\reset@font\normalsize\bfseries\mathversion{bold}}}
+
+\def\subparagraph{%
+  \@startsection{subparagraph}{5}{\z@}%
+  {2ex \@plus 1ex \@minus .2ex}%
+  {-1em}%
+  {\reset@font\normalsize\bfseries\mathversion{bold}}}
+
+\def\l@section#1#2{%
+  \ifnum \c@tocdepth >\z@%
+    \addpenalty{\@secpenalty}%
+    \addvspace{1.0em \@plus\p@}%
+    \begingroup%
+      \parindent\z@ \rightskip\@pnumwidth \parfillskip-\rightskip%
+      \leavevmode\bfseries\mathversion{bold}%
+      \setlength\@lnumwidth{1.5em}%
+      \advance\leftskip\@lnumwidth \hskip-\leftskip%
+      #1\nobreak\hfil\nobreak\hbox to\@pnumwidth{\hss#2}\par%
+    \endgroup%
+  \fi}
+
+\def\@sect#1#2#3#4#5#6[#7]#8{%
+  \ifnum #2>\c@secnumdepth%
+    \let\@svsec\@empty%
+  \else%
+    \refstepcounter{#1}%
+    \protected@edef\@svsec{\@sectsymbol\@seccntformat{#1}\relax}%
+  \fi%
+  \@tempskipa #5\relax%
+  \ifdim \@tempskipa>\z@%
+    \begingroup%
+      #6{%
+        \@hangfrom{\hskip #3\relax\@svsec}%
+          \interlinepenalty \@M #8\@@par}%
+    \endgroup%
+    \csname #1mark\endcsname{#7}%
+    \addcontentsline{toc}{#1}{%
+      \ifnum #2>\c@secnumdepth%
+      \else%
+        \@sectsymbol\protect\numberline{\csname the#1\endcsname}%
+      \fi%
+      #7}%
+  \else%
+    \def\@svsechd{%
+      #6{\hskip #3\relax%
+      \@svsec #8}%
+      \csname #1mark\endcsname{#7}%
+      \addcontentsline{toc}{#1}{%
+        \ifnum #2>\c@secnumdepth%
+        \else%
+          \@sectsymbol\protect\numberline{\csname the#1\endcsname}%
+        \fi%
+        #7}}%
+  \fi%
+  \@xsect{#5}}
+
+
+
+
+\def\maketitle{
+	\par
+	\begingroup
+	\def\thefootnote{\fnsymbol{footnote}}
+	\def\@makefnmark{\hbox to 0pt{$^{\@thefnmark}$\hss}}
+	\twocolumn[\@maketitle]\@thanks
+	\endgroup
+	\setcounter{footnote}{0}
+	\let\maketitle\relax
+	\let\@maketitle\relax
+	\gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax
+}
+%
+%%%%%  Format of Page 1 %%%%%
+%
+% Title
+%
+\def\@maketitle{
+  \newpage\null\vskip 1em%
+  \begin{center}%
+	\let\footnote\thanks
+% Japanese
+	{\Large \bf \@jtitle \par}
+	\vskip 2ex
+ 	{\large \begin{tabular}[t]{c}\@jauthor \end{tabular}\par}
+	\begin{tabular}[t]{c} \@jcontact \end{tabular}\par
+	\par \vskip 2ex
+  \end{center}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%	Definitions
+%
+% Japanese titles
+%
+\def\jtitle#1{\gdef\@jtitle{#1}}
+\def\@jtitle#{\mkt\@warning\jtitle}
+%
+% Japanese authors
+%
+\long\def\jauthor#1{\long\gdef\@jauthor{#1}}
+\def\@jauthor{\mkt@warning\jauthor}
+%
+%  Japanese contact address
+%
+\long\def\jcontact#1{\long\gdef\@jcontact{#1}}
+\def\@jcontact{\mkt@warning\jcontact}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
